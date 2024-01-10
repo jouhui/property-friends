@@ -12,7 +12,7 @@ from sklearn.metrics import (
 from sklearn.pipeline import Pipeline
 
 from src import utils
-from src.dataset import Dataloader
+from src.dataloader import Dataloader
 
 
 class Trainer:
@@ -78,7 +78,7 @@ class Trainer:
 
 
 if __name__ == "__main__":
-    from src.dataset import CsvDataloader
+    from src.dataloader import CsvDataloader
 
     dataloader = CsvDataloader(train_path="data/train.csv", test_path="data/test.csv")
     trainer = Trainer(dataloader)
