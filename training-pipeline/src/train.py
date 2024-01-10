@@ -16,6 +16,8 @@ from src.dataloader import Dataloader
 
 
 class Trainer:
+    """Trainer class that trains a model and evaluates it."""
+
     def __init__(self, dataloader: Dataloader) -> None:
         self.train_set = dataloader.load_train_data()
         self.test_set = dataloader.load_test_data()
@@ -29,6 +31,7 @@ class Trainer:
         self.pipeline = self._build_pipeline()
 
     def _build_pipeline(self) -> Pipeline:
+        """Build the pipeline for training."""
         preprocessor = self._get_preprocessor()
         model = GradientBoostingRegressor(
             **{
@@ -54,18 +57,41 @@ class Trainer:
         return preprocessor
 
     def train(self, model_filename: str, upload_to_gcs: bool = False) -> None:
+        """Train the model and save it.
+
+        Args:
+            model_filename (str):
+                The filename in which the model will be saved.
+            upload_to_gcs (bool, optional):
+                Whether to upload the model to a GCS bucket. Defaults to False.
+        """
         self.pipeline.fit(
             self.train_set[self.train_cols], self.train_set[self.target_col]
         )
         self._save_model(model_filename, upload_to_gcs)
 
     def _save_model(self, model_filename: str, upload_to_gcs: bool = False) -> None:
+        """Save the model locally and optionally upload it to a GCS bucket.
+
+        Args:
+            model_filename (str):
+                The filename in which the model will be saved.
+            upload_to_gcs (bool, optional):
+                Whether to upload the model to a GCS bucket. Defaults to False.
+        """
         joblib.dump(self.pipeline, model_filename)
 
         if upload_to_gcs:
             utils.upload_to_gcs(model_filename)
 
     def evaluate(self, test_set: pd.DataFrame | None = None) -> None:
+        """Evaluate the model on the test set and print the results.
+
+        Args:
+            test_set (pd.DataFrame | None, optional):
+                The test set in which the model will be evaluated. If no test set is provided,
+                the dataloader's default test set will be used. Defaults to None.
+        """
         if test_set is None:
             test_set = self.test_set
 

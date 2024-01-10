@@ -12,6 +12,8 @@ class Dataloader(Protocol):
 
 
 class CsvDataloader:
+    """Dataloader that loads data from CSV files."""
+
     def __init__(self, train_path: str, test_path: str):
         self.train_path = train_path
         self.test_path = test_path

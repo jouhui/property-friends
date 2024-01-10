@@ -18,6 +18,8 @@ model = load_model_from_gcs()
 
 
 class Property(BaseModel):
+    """Entity to represent a property."""
+
     type: Literal["casa", "departamento"]
     sector: Literal[
         "la reina",

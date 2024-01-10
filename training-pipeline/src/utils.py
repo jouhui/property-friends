@@ -5,6 +5,11 @@ from .config import settings
 
 
 def upload_to_gcs(filename: str) -> None:
+    """Upload a file to Google Cloud Storage.
+
+    Args:
+        filename (str): The filename of the file to upload.
+    """
     credentials = Credentials.from_service_account_file(
         f"credentials/{settings.google_application_credentials}"
     )

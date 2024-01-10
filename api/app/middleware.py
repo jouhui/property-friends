@@ -17,5 +17,5 @@ async def log_middleware(request: Request, call_next: Callable):
     """
     logger.info(f"Request: {request.method} {request.url}")
     response = await call_next(request)
-    logger.info(f"Response: {response.status_code}")
+    logger.info(f"Response: {response.status_code} ({request.method} {request.url})")
     return response
