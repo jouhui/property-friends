@@ -13,8 +13,9 @@ def load_model_from_gcs():
 
     client = storage.Client(credentials=credentials)
     bucket = client.get_bucket(settings.bucket_name)
+    blob = bucket.blob(settings.bucket_model_path)
 
-    blob = bucket.blob("models/model.joblib")
-    blob.download_to_filename("model.joblib")
-    model = joblib.load("model.joblib")
+    local_filename = "model.joblib"
+    blob.download_to_filename(local_filename)
+    model = joblib.load(local_filename)
     return model
