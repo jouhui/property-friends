@@ -40,7 +40,6 @@ The project is divided in two parts, the training pipeline and the API. The main
 │   │   ├── main.py                 # Main file that runs the application
 │   │   ├── middleware.py           # Middleware that logs each request to the API
 │   │   ├── utils.py                # Utility functions to load the model
-│   │   └── schema.py               # Pydantic schema for the data to predict
 │   ├── credentials             # Credentials to access the GCS bucket
 │   ├── Dockerfile              # Dockerfile to build the API
 │   ├── logs                    # Logs of the API
