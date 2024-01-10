@@ -12,7 +12,7 @@ First, download the `property_friends_config_files.zip` file provided in the ema
 
 Then, copy the files to the corresponding folders:
 
-```
+```console
 cd property_friends_config_files
 
 cp pipeline.env ../training-pipeline/
@@ -68,7 +68,7 @@ The project is divided in two parts, the training pipeline and the API. The main
 
 The training pipeline is located in the `training-pipeline` folder.
 
-### Asumptions
+### Assumptions
 
 - The Client is happy with the results of the current model, so further hyperparameter tuning or model selection is not currently covered in this pipeline.
 
@@ -78,20 +78,20 @@ Suggestions for improvement are [here](#suggestions-for-improvement).
 
 First, build the Docker image. In a terminal, run:
 
-```
+```console
 cd training-pipeline
 docker build -t training-pipeline:latest .
 ```
 
 Then, run the pipeline with Docker:
 
-```
+```console
 docker run training-pipeline:latest
 ```
 
 It will train the model and you should get these test metrics of the trained model:
 
-```
+```console
 RMSE:  10254.155686652393
 MAPE:  0.40042979298798137
 MAE :  5859.374796053153
@@ -99,9 +99,9 @@ MAE :  5859.374796053153
 
 ## 2. Property valuation estimation API
 
-This is an API to estimate the valuation of a property in Chile.
+This is an API to estimate the valuation of a property in Chile. It is located in the `api` folder.
 
-### Asumptions
+### Assumptions
 
 Suggestions for improvement are [here](#suggestions-for-improvement).
 
@@ -109,7 +109,8 @@ Suggestions for improvement are [here](#suggestions-for-improvement).
 
 Same as above, first build the Docker image, and then run the API with Docker.
 
-```
+```console
+cd api
 docker build -t api:latest .
 docker run -p 8000:8000 api:latest
 ```
@@ -120,7 +121,7 @@ To execute a prediction, there are two options:
 
 In another terminal, run
 
-```
+```console
 curl -i -X POST "http://0.0.0.0:8000/predict" \
 -H "accept: application/json" \
 -H "Content-Type: application/json" \
@@ -135,3 +136,5 @@ where `<THE_API_KEY>` is the API Key provided in the email to Thamires Bengaly, 
 In a browser, open `0.0.0.0/docs`, Authenticate with the API Key and test the method `predict` by clicking on `Try it out` and filling the data to predict.
 
 ## Suggestions for improvement
+
+- CI/CD is not currently implemented, but in a real project I would implement github actions that would run the tests for the pipeline and the API, and another ones that would build and push the Docker images to an artifact registry.
