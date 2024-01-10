@@ -19,6 +19,49 @@ cp pipeline.env ../training-pipeline/
 cp api.env ../api/
 cp bucket-writer.json ../training-pipeline/credentials/
 cp bucket-reader.json ../api/credentials/
+
+# These are the same datasets provided in the challenge
+cp train.csv ../training-pipeline/data/
+cp test.csv ../training-pipeline/data/
+```
+
+### Project structure
+
+The project is divided in two parts, the training pipeline and the API. The main structure of the project is the following:
+
+```bash
+.
+├── api
+│   ├── api.env                 # API environment variables
+│   ├── app                     # FastAPI app
+│   │   ├── auth.py                 # Authentication with API Key
+│   │   ├── config.py               # Configuration that loads environment variables
+│   │   ├── logger.py               # Logging configuration
+│   │   ├── main.py                 # Main file that runs the application
+│   │   ├── middleware.py           # Middleware that logs each request to the API
+│   │   ├── utils.py                # Utility functions to load the model
+│   │   └── schema.py               # Pydantic schema for the data to predict
+│   ├── credentials             # Credentials to access the GCS bucket
+│   ├── Dockerfile              # Dockerfile to build the API
+│   ├── logs                    # Logs of the API
+│   ├── models                  # Loaded models
+│   ├── Pipfile                 # Dependencies
+│   ├── Pipfile.lock
+│   └── pyproject.toml          # Project configuration
+└── training-pipeline
+    ├── credentials             # Credentials to access the GCS bucket
+    ├── data                    # Data to train and evaluate the model
+    ├── Dockerfile              # Dockerfile to build the training pipeline
+    ├── models                  # Trained models
+    ├── pipeline.env            # Pipeline environment variables
+    ├── Pipfile                 # Dependencies
+    ├── Pipfile.lock
+    ├── pyproject.toml          # Project configuration
+    └── src
+        ├── config.py           # Configuration that loads environment variables
+        ├── dataloader.py       # Dataloader that builds the datasets
+        ├── train.py            # Training script
+        └── utils.py            # Utility functions
 ```
 
 ## 1. Training pipeline
