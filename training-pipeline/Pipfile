@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+joblib = "*"
+numpy = "*"
+pandas = "*"
+category-encoders = "*"
+google-cloud-storage = "*"
+pydantic-settings = "*"
+
+[dev-packages]
+isort = "*"
+black = "*"
+
+[requires]
+python_version = "3.11"
