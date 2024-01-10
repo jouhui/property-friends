@@ -6,7 +6,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from .auth import get_valid_api_key
 from .config import settings
 from .middleware import log_middleware
-from .model_utils import load_model_from_gcs
+from .utils import load_model_from_gcs
 from .schema import Property
 
 app = FastAPI()
