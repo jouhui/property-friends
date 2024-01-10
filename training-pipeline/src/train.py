@@ -17,13 +17,15 @@ from src.dataset import Dataloader
 
 class Trainer:
     def __init__(self, dataloader: Dataloader) -> None:
-        self.dataloader = dataloader
-        self.train_set, self.test_set = dataloader.load_data()
+        self.train_set = dataloader.load_train_data()
+        self.test_set = dataloader.load_test_data()
+
         self.train_cols = [
             col for col in self.train_set.columns if col not in ["id", "target"]
         ]
         self.categorical_cols = ["type", "sector"]
         self.target_col = "price"
+
         self.pipeline = self._build_pipeline()
 
     def _build_pipeline(self) -> Pipeline:

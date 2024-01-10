@@ -4,7 +4,10 @@ import pandas as pd
 
 
 class Dataloader(Protocol):
-    def load_data(self) -> tuple[pd.DataFrame, pd.DataFrame]:
+    def load_train_data(self) -> pd.DataFrame:
+        ...
+
+    def load_test_data(self) -> pd.DataFrame:
         ...
 
 
@@ -13,7 +16,10 @@ class CsvDataloader:
         self.train_path = train_path
         self.test_path = test_path
 
-    def load_data(self) -> tuple[pd.DataFrame, pd.DataFrame]:
+    def load_train_data(self) -> pd.DataFrame:
         train = pd.read_csv(self.train_path)
+        return train
+
+    def load_test_data(self) -> pd.DataFrame:
         test = pd.read_csv(self.test_path)
-        return train, test
+        return test
