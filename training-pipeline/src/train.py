@@ -91,9 +91,17 @@ class Trainer:
             test_set (pd.DataFrame | None, optional):
                 The test set in which the model will be evaluated. If no test set is provided,
                 the dataloader's default test set will be used. Defaults to None.
+
+        Raises:
+            ValueError: If the test set does not contain the same columns as the default test set.
         """
         if test_set is None:
             test_set = self.test_set
+        else:
+            if any(col in test_set.columns for col in self.test_set.cols):
+                raise ValueError(
+                    f"The test set must have all these columns: {self.test_set.cols}"
+                )
 
         predictions = self.pipeline.predict(test_set[self.train_cols])
         target = test_set[self.target_col].values
