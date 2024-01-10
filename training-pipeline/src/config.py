@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     bucket_name: str
     google_application_credentials: str
 
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file="pipeline.env")
 
 
 settings = Settings()

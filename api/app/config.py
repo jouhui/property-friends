@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     bucket_name: str
     dev_mode: bool
 
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file="api.env")
 
 
 settings = Settings()
