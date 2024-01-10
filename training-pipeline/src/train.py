@@ -22,9 +22,7 @@ class Trainer:
         self.train_set = dataloader.load_train_data()
         self.test_set = dataloader.load_test_data()
 
-        self.train_cols = [
-            col for col in self.train_set.columns if col not in ["id", "target"]
-        ]
+        self.train_cols = [col for col in self.train_set.columns if col not in ["id", "target"]]
         self.categorical_cols = ["type", "sector"]
         self.target_col = "price"
 
@@ -50,9 +48,7 @@ class Trainer:
     def _get_preprocessor(self) -> ColumnTransformer:
         categorical_transformer = TargetEncoder()
         preprocessor = ColumnTransformer(
-            transformers=[
-                ("categorical", categorical_transformer, self.categorical_cols)
-            ]
+            transformers=[("categorical", categorical_transformer, self.categorical_cols)]
         )
         return preprocessor
 
@@ -65,9 +61,7 @@ class Trainer:
             upload_to_gcs (bool, optional):
                 Whether to upload the model to a GCS bucket. Defaults to False.
         """
-        self.pipeline.fit(
-            self.train_set[self.train_cols], self.train_set[self.target_col]
-        )
+        self.pipeline.fit(self.train_set[self.train_cols], self.train_set[self.target_col])
         self._save_model(model_filename, upload_to_gcs)
 
     def _save_model(self, model_filename: str, upload_to_gcs: bool = False) -> None:
@@ -99,9 +93,7 @@ class Trainer:
             test_set = self.test_set
         else:
             if any(col in test_set.columns for col in self.test_set.cols):
-                raise ValueError(
-                    f"The test set must have all these columns: {self.test_set.cols}"
-                )
+                raise ValueError(f"The test set must have all these columns: {self.test_set.cols}")
 
         predictions = self.pipeline.predict(test_set[self.train_cols])
         target = test_set[self.target_col].values

@@ -49,14 +49,13 @@ def health() -> dict[str, str]:
 
 
 @app.post("/predict")
-def predict(
-    property: Property, api_key: str = Security(get_valid_api_key)
-) -> dict[str, float]:
-    """Endpoint to make predictions given a property.
+def predict(property: Property, api_key: str = Security(get_valid_api_key)) -> dict[str, float]:
+    """Endpoint to make predictions given a property. The API Key must be provided in the
+    request header.
 
     Args:
         property (Property): The property to make the prediction.
-        api_key (str, optional): API Key for authemtication.
+        api_key (str, optional): API Key for authentication.
 
     Raises:
         401 Unauthorized: If the API Key is invalid.
