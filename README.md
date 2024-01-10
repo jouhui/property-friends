@@ -116,7 +116,7 @@ docker run -p 8000:8000 api:latest
 
 To execute a prediction, there are two options:
 
-##### Test in the terminal with `curl`
+#### Test in the terminal with `curl`
 
 In another terminal, run
 
@@ -130,7 +130,7 @@ curl -i -X POST "http://0.0.0.0:8000/predict" \
 
 where `<THE_API_KEY>` is the API Key provided in the email to Thamires Bengaly, and `<THE_DATA>` is the data to predict. For example: `{"type": "casa", "sector": "la reina", "net_usable_area": 50, "net_area": 70, "n_rooms": 3, "n_bathroom": 2, "latitude": -70, "longitude": -80}`.
 
-##### Test with browser
+#### Test with browser
 
 In a browser, open `0.0.0.0/docs`, Authenticate with the API Key and test the method `predict` by clicking on `Try it out` and filling the data to predict.
 
