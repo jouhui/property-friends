@@ -38,6 +38,12 @@ class Property(BaseModel):
     longitude: float
 
 
+class Prediction(BaseModel):
+    """Entity to represent a property prediction."""
+
+    prediction: float
+
+
 @app.get("/")
 def home() -> dict[str, str]:
     return {"message": "This is the API for the property price prediction model."}
@@ -48,7 +54,7 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.post("/predict")
+@app.post("/predict", response_model=Prediction)
 def predict(property: Property, api_key: str = Security(get_valid_api_key)) -> dict[str, float]:
     """Endpoint to make predictions given a property. The API Key must be provided in the
     request header.
