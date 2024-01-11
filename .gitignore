@@ -1,2 +1,6 @@
 */*.env
 .vscode
+.git
+.pytest_cache
+
+property_friends_config_files*
