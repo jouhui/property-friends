@@ -45,12 +45,22 @@ class Prediction(BaseModel):
 
 
 @app.get("/")
-def home() -> dict[str, str]:
+def home(api_key: str = Security(get_valid_api_key)) -> dict[str, str]:
+    """Home endpoint. The API Key must be provided in the request header.
+
+    Raises:
+        HTTPError: If the API Key is invalid.
+    """
     return {"message": "This is the API for the property price prediction model."}
 
 
 @app.get("/health")
-def health() -> dict[str, str]:
+def health(api_key: str = Security(get_valid_api_key)) -> dict[str, str]:
+    """Health check endpoint. The API Key must be provided in the request header.
+
+    Raises:
+        HTTPError: If the API Key is invalid.
+    """
     return {"status": "ok"}
 
 
@@ -64,7 +74,7 @@ def predict(property: Property, api_key: str = Security(get_valid_api_key)) -> d
         api_key (str, optional): API Key for authentication.
 
     Raises:
-        401 Unauthorized: If the API Key is invalid.
+        HTTPError: If the API Key is invalid.
 
     Returns:
         dict[str, float]: A dictionary with the predicted property price.
