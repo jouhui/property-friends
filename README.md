@@ -153,7 +153,7 @@ In particular, for the training pipeline:
 
 - For now, the GradientBoostingRegressor is hardcoded in `model.py`. The model should be also abstracted, and the model hyperparameters should be loaded from a configuration file.
 - Test for the components of the training pipeline should be implemented. The components are already separated with dependency injection, so we just need to create fake classes to test them.
-- I would also implement data versioning, model versioning and experiment tracking in a real project, which would allow to track the results and to switch between different models more easily.
+- The model deployment is only a simple upload to GCS for now, but in a real project, I would also implement model versioning in a model registry and experiment tracking, along with a data pipeline, which would allow to track and reproduce the results, and to switch between different models and datasets more easily.
 
 And for the API:
 
