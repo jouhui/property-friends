@@ -36,7 +36,6 @@ The project is divided in two parts, the training pipeline and the API. The main
 │   ├── app                     # FastAPI app
 │   │   ├── auth.py                 # Authentication with API Key
 │   │   ├── config.py               # Configuration that loads environment variables
-│   │   ├── logger.py               # Logging configuration
 │   │   ├── main.py                 # Main file that runs the application
 │   │   ├── middleware.py           # Middleware that logs each request to the API
 │   │   ├── utils.py                # Utility functions to load the model

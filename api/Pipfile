@@ -16,6 +16,7 @@ starlette = "*"
 google-cloud-storage = "*"
 pydantic-settings = "*"
 typing-extensions = "*"
+structlog = "*"
 
 [dev-packages]
 black = "*"
