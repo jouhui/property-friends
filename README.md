@@ -46,9 +46,9 @@ The project is divided in two parts, the training pipeline and the API. The main
 │   ├── models                  # Loaded models
 │   ├── Pipfile                 # Dependencies
 │   ├── Pipfile.lock
-│   └── pyproject.toml          # Project configuration
-│   ├── tests
-│   │   ├── test_main.py        # Tests for the API
+│   ├── pyproject.toml          # Project configuration
+│   └── tests
+│       └── test_main.py        # Tests for the API
 └── training-pipeline
     ├── credentials             # Credentials to access the GCS bucket
     ├── data                    # Data to train and evaluate the model
