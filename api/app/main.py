@@ -14,7 +14,10 @@ from .utils import load_model_from_gcs
 app = FastAPI()
 app.add_middleware(BaseHTTPMiddleware, dispatch=log_middleware)
 
-model = load_model_from_gcs()
+try:
+    model = load_model_from_gcs()
+except Exception as e:
+    raise RuntimeError("Error loading the model from GCS") from e
 
 
 class Property(BaseModel):
