@@ -138,5 +138,6 @@ In a browser, open `http://0.0.0.0/docs`, which shows the documentation of the a
 
 ## Suggestions for improvement
 
-- CI/CD is not currently implemented, but in a real project I would implement github actions that would run the tests for the pipeline and the API, and another ones that would build and push the Docker images to an artifact registry.
+- CI/CD is not currently implemented for simplicty, but in a real project I would implement github actions that would run the tests for the pipeline and the API, and another ones that would build and push the Docker images to an artifact registry.
 - For simplicity, this repository does not contain Cloud solutions for the pipeline and the API. However, in a real project, depending of the requirements, both of them could be deployed in Cloud solutions, which would allow to scale the training pipeline with more data.
+- I would also implement data versioning, model versioning and experiment tracking in a real project, for example with DVC and MLFlow.
