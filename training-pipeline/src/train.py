@@ -86,7 +86,12 @@ class Trainer:
 
         if upload_to_gcs:
             logger.info("Uploading the model to GCS", filename=model_filename)
-            utils.upload_to_gcs(model_filename)
+            try:
+                utils.upload_to_gcs(model_filename)
+            except Exception as e:
+                # For simplicity, any error while uploading the model to GCS is logged but not
+                # raised. This won't be the case in a real project, of course.
+                logger.error("Error uploading the model to GCS", error=e)
 
     def evaluate(self, test_set: pd.DataFrame | None = None) -> None:
         """Evaluate the model on the test set and print the results.
