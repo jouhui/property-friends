@@ -109,6 +109,8 @@ This is an API to estimate the valuation of a property in Chile. It is located i
 
 ### Assumptions
 
+- All endpoints are protected with an API Key, so the user needs to authenticate with the API Key to access them.
+
 Suggestions for improvement are [here](#suggestions-for-improvement).
 
 ### Instructions
@@ -148,10 +150,13 @@ In a browser, open `http://0.0.0.0/docs`, which shows the documentation of the a
 
 In particular, for the training pipeline:
 
-- I would also implement data versioning, model versioning and experiment tracking in a real project, for example with DVC and MLFlow.
-- In the training pipeline, the model should be abstracted from the Trainer class, so that it can be easily replaced by another model.
-- Test for the components of the training pipeline should be implemented. The components are already separated with dependency injection, so we just need to create fake classes to test them.
 - For now, the GradientBoostingRegressor is hardcoded in `model.py`. The model should be also abstracted, and the model hyperparameters should be loaded from a configuration file.
+- Test for the components of the training pipeline should be implemented. The components are already separated with dependency injection, so we just need to create fake classes to test them.
+- I would also implement data versioning, model versioning and experiment tracking in a real project, which would allow to track the results and to switch between different models more easily.
+
+And for the API:
+
+- The API key is currently stored in the `api.env` file. In a real project, I would store it in a secret manager.
 
 ## Author
 
