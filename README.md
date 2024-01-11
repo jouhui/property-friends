@@ -110,6 +110,7 @@ This is an API to estimate the valuation of a property in Chile. It is located i
 ### Assumptions
 
 - All endpoints are protected with an API Key, so the user needs to authenticate with the API Key to access them.
+- The API has the same network connection as the training pipeline (for now).
 
 Suggestions for improvement are [here](#suggestions-for-improvement).
 
@@ -130,7 +131,7 @@ To execute a prediction, there are (at least) two options:
 In another terminal, run
 
 ```console
-curl -i -X POST "http://0.0.0.0:8000/predict" \
+curl -X POST "http://0.0.0.0:8000/predict" \
 -H "accept: application/json" \
 -H "Content-Type: application/json" \
 -H "X-API-Key: <THE_API_KEY>" \
@@ -157,6 +158,7 @@ In particular, for the training pipeline:
 And for the API:
 
 - The API key is currently stored in the `api.env` file. In a real project, I would store it in a secret manager.
+- I assumed that the API has the same network connection as the training pipeline. so using the `0.0.0.0` host is fine. However, in a real project, this is not always the case, so routing the API requests would be necessary.
 
 ## Author
 
