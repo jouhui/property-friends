@@ -6,6 +6,45 @@ Training pipeline and serving API for property valuation estimation.
 
 - Docker >= 24.0.7
 
+### Project structure
+
+The project is divided in two parts, the training pipeline and the API. The main structure of the project is the following:
+
+```bash
+.
+├── api
+│   ├── api.env                 # API environment variables
+│   ├── app                     # FastAPI app
+│   │   ├── auth.py                 # Authentication with API Key
+│   │   ├── config.py               # Configuration that loads environment variables
+│   │   ├── main.py                 # Main file that runs the application
+│   │   ├── middleware.py           # Middleware that logs each request to the API
+│   │   ├── utils.py                # Utility functions to load the model
+│   ├── credentials             # Credentials to access the GCS bucket
+│   ├── Dockerfile              # Dockerfile to build the API
+│   ├── logs                    # Logs of the API
+│   ├── models                  # Loaded models
+│   ├── Pipfile                 # Dependency management
+│   ├── Pipfile.lock
+│   ├── pyproject.toml          # Project configuration
+│   └── tests
+│       └── test_main.py        # Tests for the API
+└── training-pipeline
+    ├── credentials             # Credentials to access the GCS bucket
+    ├── data                    # Data to train and evaluate the model
+    ├── Dockerfile              # Dockerfile to build the training pipeline
+    ├── models                  # Trained models
+    ├── pipeline.env            # Pipeline environment variables
+    ├── Pipfile                 # Dependency management
+    ├── Pipfile.lock
+    ├── pyproject.toml          # Project configuration
+    └── src
+        ├── config.py           # Configuration that loads environment variables
+        ├── dataloader.py       # Dataloader that builds the datasets
+        ├── train.py            # Training script
+        └── utils.py            # Utility functions
+```
+
 ### Setup
 
 First, download the `property_friends_config_files.zip` file provided in the email to Thamires Bengaly and extract it in the root of this repository.
@@ -25,45 +64,6 @@ cp train.csv ../training-pipeline/data/
 cp test.csv ../training-pipeline/data/
 ```
 
-### Project structure
-
-The project is divided in two parts, the training pipeline and the API. The main structure of the project is the following:
-
-```bash
-.
-├── api
-│   ├── api.env                 # API environment variables
-│   ├── app                     # FastAPI app
-│   │   ├── auth.py                 # Authentication with API Key
-│   │   ├── config.py               # Configuration that loads environment variables
-│   │   ├── main.py                 # Main file that runs the application
-│   │   ├── middleware.py           # Middleware that logs each request to the API
-│   │   ├── utils.py                # Utility functions to load the model
-│   ├── credentials             # Credentials to access the GCS bucket
-│   ├── Dockerfile              # Dockerfile to build the API
-│   ├── logs                    # Logs of the API
-│   ├── models                  # Loaded models
-│   ├── Pipfile                 # Dependencies
-│   ├── Pipfile.lock
-│   ├── pyproject.toml          # Project configuration
-│   └── tests
-│       └── test_main.py        # Tests for the API
-└── training-pipeline
-    ├── credentials             # Credentials to access the GCS bucket
-    ├── data                    # Data to train and evaluate the model
-    ├── Dockerfile              # Dockerfile to build the training pipeline
-    ├── models                  # Trained models
-    ├── pipeline.env            # Pipeline environment variables
-    ├── Pipfile                 # Dependencies
-    ├── Pipfile.lock
-    ├── pyproject.toml          # Project configuration
-    └── src
-        ├── config.py           # Configuration that loads environment variables
-        ├── dataloader.py       # Dataloader that builds the datasets
-        ├── train.py            # Training script
-        └── utils.py            # Utility functions
-```
-
 ## 1. Training pipeline
 
 The training pipeline is located in the `training-pipeline` folder.
@@ -74,6 +74,8 @@ The training pipeline is located in the `training-pipeline` folder.
 - For simplicity, Cloud solutions are not currently implemented. However, the trained model is stored locally and in a GCS bucket. With the containerized pipeline, it is easy to deploy it in Cloud solutions.
 
 Suggestions for improvement are [here](#suggestions-for-improvement).
+
+**Note**: The training pipeline currently uploads the trained model to a GCS bucket. That bucket is using a Free Quota that will expire on March. After that date, the model won't be uploaded to the bucket.
 
 ### Instructions
 
@@ -141,3 +143,7 @@ In a browser, open `http://0.0.0.0/docs`, which shows the documentation of the a
 - CI/CD is not currently implemented for simplicty, but in a real project I would implement github actions that would run the tests for the pipeline and the API, and another ones that would build and push the Docker images to an artifact registry.
 - For simplicity, this repository does not contain Cloud solutions for the pipeline and the API. However, in a real project, depending of the requirements, both of them could be deployed in Cloud solutions, which would allow to scale the training pipeline with more data.
 - I would also implement data versioning, model versioning and experiment tracking in a real project, for example with DVC and MLFlow.
+
+## Author
+
+For any questions, please contact Jouhui Ho at jouhui.ho@ug.uchile.cl
