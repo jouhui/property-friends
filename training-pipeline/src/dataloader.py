@@ -25,3 +25,8 @@ class CsvDataloader:
     def load_test_data(self) -> pd.DataFrame:
         test = pd.read_csv(self.test_path)
         return test
+
+
+# To connect the pipeline with the database, just create another class that follows the Dataloader
+# protocol, ensuring that the data loading methods return a pandas DataFrame with the same columns.
+# That new class can be used in the trainer.Trainer method without any changes to the other classes.

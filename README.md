@@ -40,8 +40,11 @@ The project is divided in two parts, the training pipeline and the API. The main
     ├── pyproject.toml          # Project configuration
     └── src
         ├── config.py           # Configuration that loads environment variables
+        ├── data_processing.py  # Data processing class
         ├── dataloader.py       # Dataloader that builds the datasets
-        ├── train.py            # Training script
+        ├── main.py             # Main script that runs the pipeline
+        ├── model.py            # Model class to be trained and evaluated
+        ├── trainer.py          # Trainer class
         └── utils.py            # Utility functions
 ```
 
@@ -141,9 +144,15 @@ In a browser, open `http://0.0.0.0/docs`, which shows the documentation of the a
 ## Suggestions for improvement
 
 - CI/CD is not currently implemented for simplicty, but in a real project I would implement github actions that would run the tests for the pipeline and the API, and another ones that would build and push the Docker images to an artifact registry.
-- For simplicity, this repository does not contain Cloud solutions for the pipeline and the API. However, in a real project, depending of the requirements, both of them could be deployed in Cloud solutions, which would allow to scale the training pipeline with more data.
+- For simplicity, this repository does not contain Cloud solutions for the pipeline and the API. However, in a real project, both of them could be deployed in Cloud solutions, which would allow to scale the training pipeline with more data and the API with more requests.
+
+In particular, for the training pipeline:
+
 - I would also implement data versioning, model versioning and experiment tracking in a real project, for example with DVC and MLFlow.
+- In the training pipeline, the model should be abstracted from the Trainer class, so that it can be easily replaced by another model.
+- Test for the components of the training pipeline should be implemented. The components are already separated with dependency injection, so we just need to create fake classes to test them.
+- For now, the GradientBoostingRegressor is hardcoded in `model.py`. The model should be also abstracted, and the model hyperparameters should be loaded from a configuration file.
 
 ## Author
 
-For any questions, please contact Jouhui Ho at jouhui.ho@ug.uchile.cl
+For any questions or suggestions, please contact Jouhui Ho at jouhui.ho@ug.uchile.cl

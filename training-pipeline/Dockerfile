@@ -8,4 +8,4 @@ RUN pipenv install --system --deploy
 
 COPY . .
 
-CMD ["python", "-m", "src.train"]
+CMD ["python", "-m", "src.main"]
