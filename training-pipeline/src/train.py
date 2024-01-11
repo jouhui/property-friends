@@ -1,6 +1,7 @@
 import joblib
 import numpy as np
 import pandas as pd
+import structlog
 from category_encoders import TargetEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import GradientBoostingRegressor
@@ -14,6 +15,9 @@ from sklearn.pipeline import Pipeline
 from src import utils
 from src.dataloader import Dataloader
 
+logger = structlog.get_logger()
+logger.bind(module="trainer")
+
 
 class Trainer:
     """Trainer class that trains a model and evaluates it."""
@@ -22,12 +26,11 @@ class Trainer:
         self.train_set = dataloader.load_train_data()
         self.test_set = dataloader.load_test_data()
 
-        self.train_cols = [
-            col for col in self.train_set.columns if col not in ["id", "target"]
-        ]
+        self.train_cols = [col for col in self.train_set.columns if col not in ["id", "target"]]
         self.categorical_cols = ["type", "sector"]
         self.target_col = "price"
 
+        logger.info("Building the pipeline", random_seed=random_seed)
         self.pipeline = self._build_pipeline(random_seed)
 
     def _build_pipeline(self, random_seed: int = 0) -> Pipeline:
@@ -51,9 +54,7 @@ class Trainer:
     def _get_preprocessor(self) -> ColumnTransformer:
         categorical_transformer = TargetEncoder()
         preprocessor = ColumnTransformer(
-            transformers=[
-                ("categorical", categorical_transformer, self.categorical_cols)
-            ]
+            transformers=[("categorical", categorical_transformer, self.categorical_cols)]
         )
         return preprocessor
 
@@ -66,9 +67,10 @@ class Trainer:
             upload_to_gcs (bool, optional):
                 Whether to upload the model to a GCS bucket. Defaults to False.
         """
-        self.pipeline.fit(
-            self.train_set[self.train_cols], self.train_set[self.target_col]
-        )
+        logger.info("Training the model", data_shape=self.train_set.shape)
+        self.pipeline.fit(self.train_set[self.train_cols], self.train_set[self.target_col])
+
+        logger.info("Saving the model", filename=model_filename, upload_to_gcs=upload_to_gcs)
         self._save_model(model_filename, upload_to_gcs)
 
     def _save_model(self, model_filename: str, upload_to_gcs: bool = False) -> None:
@@ -83,6 +85,7 @@ class Trainer:
         joblib.dump(self.pipeline, model_filename)
 
         if upload_to_gcs:
+            logger.info("Uploading the model to GCS", filename=model_filename)
             utils.upload_to_gcs(model_filename)
 
     def evaluate(self, test_set: pd.DataFrame | None = None) -> None:
@@ -100,16 +103,15 @@ class Trainer:
             test_set = self.test_set
         else:
             if any(col in test_set.columns for col in self.test_set.cols):
-                raise ValueError(
-                    f"The test set must have all these columns: {self.test_set.cols}"
-                )
+                raise ValueError(f"The test set must have all these columns: {self.test_set.cols}")
 
+        logger.info("Evaluating the model", data_shape=test_set.shape)
         predictions = self.pipeline.predict(test_set[self.train_cols])
         target = test_set[self.target_col].values
 
-        print("RMSE: ", np.sqrt(mean_squared_error(predictions, target)))
-        print("MAPE: ", mean_absolute_percentage_error(predictions, target))
-        print("MAE : ", mean_absolute_error(predictions, target))
+        logger.info("RMSE", rmse=np.sqrt(mean_squared_error(predictions, target)))
+        logger.info("MAPE", mape=mean_absolute_percentage_error(predictions, target))
+        logger.info("MAE", mae=mean_absolute_error(predictions, target))
 
 
 if __name__ == "__main__":

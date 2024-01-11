@@ -94,9 +94,9 @@ docker run training-pipeline:latest
 It will train the model and you should get these test metrics of the trained model:
 
 ```console
-RMSE:  10254.155686652393
-MAPE:  0.40042979298798137
-MAE :  5859.374796053153
+2024-01-11 00:38:14 [info     ] RMSE                           rmse=10254.155686652393
+2024-01-11 00:38:14 [info     ] MAPE                           mape=0.40042979298798137
+2024-01-11 00:38:14 [info     ] MAE                            mae=5859.374796053153
 ```
 
 ## 2. Property valuation estimation API
