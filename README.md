@@ -47,6 +47,8 @@ The project is divided in two parts, the training pipeline and the API. The main
 │   ├── Pipfile                 # Dependencies
 │   ├── Pipfile.lock
 │   └── pyproject.toml          # Project configuration
+│   ├── tests
+│   │   ├── test_main.py        # Tests for the API
 └── training-pipeline
     ├── credentials             # Credentials to access the GCS bucket
     ├── data                    # Data to train and evaluate the model
@@ -70,6 +72,7 @@ The training pipeline is located in the `training-pipeline` folder.
 ### Assumptions
 
 - The Client is happy with the results of the current model, so further hyperparameter tuning or model selection is not currently covered in this pipeline.
+- For simplicity, Cloud solutions are not currently implemented. However, the trained model is stored locally and in a GCS bucket. With the containerized pipeline, it is easy to deploy it in Cloud solutions.
 
 Suggestions for improvement are [here](#suggestions-for-improvement).
 
@@ -114,7 +117,7 @@ docker build -t api:latest .
 docker run -p 8000:8000 api:latest
 ```
 
-To execute a prediction, there are two options:
+To execute a prediction, there are (at least) two options:
 
 #### Test in the terminal with `curl`
 
@@ -125,15 +128,16 @@ curl -i -X POST "http://0.0.0.0:8000/predict" \
 -H "accept: application/json" \
 -H "Content-Type: application/json" \
 -H "X-API-Key: <THE_API_KEY>" \
--d '<THE_DATA>'
+-d '{"type": "casa", "sector": "la reina", "net_usable_area": 50, "net_area": 70, "n_rooms": 3, "n_bathroom": 2, "latitude": -70, "longitude": -80}'
 ```
 
-where `<THE_API_KEY>` is the API Key provided in the email to Thamires Bengaly, and `<THE_DATA>` is the data to predict. For example: `{"type": "casa", "sector": "la reina", "net_usable_area": 50, "net_area": 70, "n_rooms": 3, "n_bathroom": 2, "latitude": -70, "longitude": -80}`.
+where `<THE_API_KEY>` is the API Key provided in `api.env`.
 
-#### Test with browser
+#### Test with the FastAPI Swagger UI
 
-In a browser, open `0.0.0.0/docs`, Authenticate with the API Key and test the method `predict` by clicking on `Try it out` and filling the data to predict.
+In a browser, open `http://0.0.0.0/docs`, which shows the documentation of the aplication. Authenticate with the API Key and test the method `predict` by clicking on `Try it out` and filling the data to predict.
 
 ## Suggestions for improvement
 
 - CI/CD is not currently implemented, but in a real project I would implement github actions that would run the tests for the pipeline and the API, and another ones that would build and push the Docker images to an artifact registry.
+- For simplicity, this repository does not contain Cloud solutions for the pipeline and the API. However, in a real project, depending of the requirements, both of them could be deployed in Cloud solutions, which would allow to scale the training pipeline with more data.
